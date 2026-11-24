@@ -1,0 +1,42 @@
+{
+  "name": "helpdesk-durable-approvals",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "dev:all": "concurrently --kill-others-on-fail -n restate,service,register,next -c magenta,cyan,gray,green \"npm:restate\" \"npm:service\" \"npm:register\" \"npm:dev\"",
+    "restate": "DO_NOT_TRACK=1 restate-server --no-logo --node-name helpdesk-demo --base-dir .restate",
+    "service": "node --env-file-if-exists=.env.local --import tsx src/restate/serve.ts",
+    "register": "tsx src/restate/register.ts",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint",
+    "test": "tsx --test tests/*.test.ts",
+    "test:durable": "tsx --test tests/durable-approvals.test.ts"
+  },
+  "dependencies": {
+    "@ai-sdk/react": "^4.0.181",
+    "@restatedev/restate-sdk": "^1.18.4",
+    "@restatedev/restate-sdk-clients": "^1.18.4",
+    "ai": "^7.0.177",
+    "next": "16.4.6",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@ai-sdk/provider": "^4.0.39",
+    "@restatedev/restate": "^1.8.1",
+    "@restatedev/restate-server": "^1.8.1",
+    "@tailwindcss/turbopack": "4.3.3",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "concurrently": "^10.0.7",
+    "eslint": "^9",
+    "eslint-config-next": "16.4.6",
+    "tailwindcss": "4.3.3",
+    "tsx": "^4.23.15",
+    "typescript": "^5"
+  }
+}

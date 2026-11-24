@@ -4,7 +4,7 @@ An IT help desk agent where ticket approvals run as [Restate](https://restate.de
 
 ![Crash and resume demo](docs/demo.gif)
 
-*The agent proposes a ticket. I kill Restate, the service and the Next.js app with `kill -9`, then restart them. The chat is gone, but the approval is still waiting with its original deadline. Approving it creates the ticket. Played at 1.5× speed.*
+*The agent proposes a ticket. Then Restate, the service and the Next.js app are killed with `kill -9` and restarted. The chat is gone, but the approval is still waiting with its original deadline. Approving it creates the ticket. Played at 1.5× speed.*
 
 ## Why
 
@@ -56,9 +56,9 @@ curl -s localhost:8080/ticketApproval/demo-1/run/send --json '{
 
 ## Design notes
 
-I used a workflow rather than a plain service because a workflow runs once per key. Submitting the same request ID twice doesn't start a second approval. Workflows also get their own state, which the UI reads.
+The approval is a workflow rather than a plain service because a workflow runs once per key. Submitting the same request ID twice doesn't start a second approval. Workflows also get their own state, which the UI reads.
 
-For the wait, I used a workflow promise rather than an awakeable. A workflow promise is addressed by the request ID, so the approve endpoint doesn't need any other ID. The workflow suspends while it waits, and nothing polls.
+The wait uses a workflow promise rather than an awakeable. A workflow promise is addressed by the request ID, so the approve endpoint doesn't need any other ID. The workflow suspends while it waits, and nothing polls.
 
 The timeout is `orTimeout()` on the promise. The timer lives in Restate, so it fires on time even if the service is down.
 
